@@ -1,8 +1,23 @@
 ﻿using System;
-
-public class Class1
+namespace LocaSIO
 {
-	public Class1()
+	public class Agence
 	{
-	}
+		private string _ville;
+
+		public Agence(string ville)
+		{
+			_ville = ville;
+		}
+
+		public string getVille()
+		{
+			return _ville;
+        }
+
+		public void setVille(string ville)
+		{
+			this._ville = ville;
+        }
+    }
 }
