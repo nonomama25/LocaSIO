@@ -1,8 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-public class ArticleChantier : Article
+namespace LocaSIO
 {
-	public ArticleChantier()
+	internal class ArticleChantier : Article
 	{
+		public ArticleChantier()
+		{
+		}
 	}
 }
