@@ -37,17 +37,27 @@ namespace locaSIO
             this._dateFin = DateFin;
         }
 
-        public StatutContrat GetStatut()
+        public StatutContrat GetStatut(StatutContrat)
         {
             return _statut
         }
 
-        public string GetDistinguishedName()
+        public void setStatut(StatutContrat )
+        {
+            this._dateFin = DateFin;
+        }
+
+        public string GetDistinguishedName(distinguishedName)
         {
             return _distinguishedName
         }
 
-       
+        public void setDistinguishedName(distinguishedName)
+        {
+            this._dateFin = DateFin;
+        }
+
+
     }
 
 }
