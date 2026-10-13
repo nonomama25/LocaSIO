@@ -1,8 +1,9 @@
 ﻿using System;
 
-public class Class1
+public class AdoClient
 {
-	public Class1()
+	public AdoClient()
 	{
+
 	}
 }
