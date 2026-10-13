@@ -19,7 +19,7 @@ namespace LocaSIO
 
         static private string GetConnectionString()
         {
-            return "Data Source=localhost\\MSSQLSERVER01;Initial Catalog=TP_Hackers_Arcade;Integrated Security=True";
+            return "Data Source=sql.reseau-labo.fr;User ID=admin_locasio;Password=********;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False";
         }
 
         public static void CloseSqlConnection()
