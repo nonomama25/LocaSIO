@@ -1,18 +1,8 @@
 ﻿using System;
+
 namespace locaSIO
 {
-
-
-
-    public enum StatutContrat
-    {
-        EnAttente,
-        Actif,
-        Termine,
-        Annule
-    }
-
-    public class Contrat
+    internal class Contrat
     {
         private DateTime _dateDebut;
         private DateTime _dateFin;
@@ -21,49 +11,43 @@ namespace locaSIO
 
         public Contrat(DateTime dateDebut, DateTime dateFin, StatutContrat statut, string distinguishedName)
         {
-            SetPeriode(dateDebut, dateFin);
-            Statut = statut;
-            DistinguishedName = distinguishedName;
-        }
-
-        public DateTime DateDebut => _dateDebut;
-        public DateTime DateFin => _dateFin;
-
-        public StatutContrat Statut
-        {
-            get => _statut;
-            set
-            {
-                if (!Enum.IsDefined(typeof(StatutContrat), value))
-                    throw new ArgumentException("Statut invalide.");
-                _statut = value;
-            }
-        }
-
-        public string DistinguishedName
-        {
-            get => _distinguishedName;
-            set
-            {
-                if (string.IsNullOrWhiteSpace(value))
-                    throw new ArgumentException("Le distinguished name est obligatoire.");
-                _distinguishedName = value;
-            }
-        }
-
-        public void SetPeriode(DateTime dateDebut, DateTime dateFin)
-        {
-            if (dateFin < dateDebut)
-                throw new ArgumentException("La date de fin doit être postérieure à la date de début.");
-
             _dateDebut = dateDebut;
             _dateFin = dateFin;
+            _statut = statut;
+            _distinguishedName = distinguishedName;
         }
 
-        public override string ToString()
+        public Datetime getDateDebut()
         {
-            return $"Contrat[{DistinguishedName}, {DateDebut:dd/MM/yyyy} -> {DateFin:dd/MM/yyyy}, {Statut}]";
+            return _dateDebut
         }
+
+        public void setDateDebut(DateTime )
+        {
+            this._nom = nom;
+        }
+
+        public Datetime getDateFin()
+        {
+            return _dateFin
+        }
+
+        public void setDateFin(DateTime )
+        {
+            this._dateFin = DateFin;
+        }
+
+        public StatutContrat GetStatut()
+        {
+            return _statut
+        }
+
+        public string GetDistinguishedName()
+        {
+            return _distinguishedName
+        }
+
+       
     }
 
 }
