@@ -57,7 +57,11 @@ namespace locaSIO
             this._dateFin = DateFin;
         }
 
-
+        internal class AdoContrat
+        {
+            static void Main()
+        }
+            string connectionString =
     }
 
 }
