@@ -7,7 +7,6 @@ using System.Data.SqlClient;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Data;
-using System.Windows.Forms;
 using LocaSIO;
 
 namespace LocaSIO
@@ -17,6 +16,8 @@ namespace LocaSIO
         private string _typeMateriel;
         private int _niveau;
         private string _saison;
+
+        private int _nbPiece;
 
         public ArticleSport(string typeMateriel, int niveau, string saison, string libelle, int tarifJournalier, bool disponible, int caution, int agenceId)
             : base(libelle, tarifJournalier, disponible, caution, agenceId)

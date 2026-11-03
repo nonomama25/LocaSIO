@@ -1,8 +1,9 @@
 ﻿using System;
-namespace LocalSIO
+namespace LocaSIO
 {
-	internal class Article
+	public class Article
 	{
+		public int Id { get; set; }
 		private string _libelle;
 		private int _tarifJournalier;
 		private bool _disponible;
@@ -60,7 +61,7 @@ namespace LocalSIO
 
 		public int getAgenceId()
 		{
-			return _agenceId
+			return _agenceId;
 		}
 
 		public void setAgenceId(int agenceId)

@@ -12,8 +12,9 @@ namespace LocaSIO
 		private bool _cacesRequis;
 		private int _poidsKg;
 
-		public ArticleChantier(string typeEngin, bool cacesRequis, int poidsKg )
-		{
+		public ArticleChantier(string typeEngin, bool cacesRequis, int poidsKg, string libelle, int tarifJournalier, bool disponible, int caution, int agenceId)
+            : base(libelle, tarifJournalier, disponible, caution, agenceId)
+        {
 			_typeEngin = typeEngin;
 			_cacesRequis = cacesRequis;
 			_poidsKg = poidsKg;

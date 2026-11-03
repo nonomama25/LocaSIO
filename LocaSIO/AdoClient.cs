@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -8,9 +8,11 @@ namespace LocaSIO
 {
     internal class AdoClient
     {
+        public static ObservableCollection<Client> AllClient = new ObservableCollection<Client>();
+
         public static ObservableCollection<Client> GetClients()
         {
-            ObservableCollection<Client> clients = new ObservableCollection<Client>();
+            AllClient.Clear();
             try
             {
                 SqlDataReader reader;
@@ -23,7 +25,7 @@ namespace LocaSIO
                 {
                     Debug.WriteLine("Loading Client DDB");
                     Debug.WriteLine(reader.GetString(1) + " " + reader.GetString(2));
-                    clients.Add(new Client(reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4))); // On ajoute le client a la liste
+                    AllClient.Add(new Client(reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetInt32(4))); // On ajoute le client a la liste
                 }
                 Ado.CloseSqlConnection();
             }// On ferme la connexion avec la bdd
@@ -32,7 +34,7 @@ namespace LocaSIO
             {
                 Console.WriteLine(ex.Message);
             }
-            return clients; // On retourne la liste de clients
+            return AllClient; // On retourne la liste de clients
         }
 
         public static void AddClient(Client client)

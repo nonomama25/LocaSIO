@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace LocaSIO
 {
-    internal class ArticleSport : Article
+    internal class ArticleVehicule : Article
     {
         private string _immatriculation;
         private string _typeVehicule;
         private int _nbKilometre;
         private string _typeCarburant;
 
-        public ArticleSport(string immatriculation, string typeVehicule, int nbKilometre, string typeCarburant, string libelle, int tarifJournalier, bool disponible, int caution, int agenceId)
+        public ArticleVehicule(string immatriculation, string typeVehicule, int nbKilometre, string typeCarburant, string libelle, int tarifJournalier, bool disponible, int caution, int agenceId)
             : base(libelle, tarifJournalier, disponible, caution, agenceId)
         {
             this._immatriculation = immatriculation;
             this._typeVehicule = typeVehicule;
             this._nbKilometre = nbKilometre;
-            this._saison = saison;
+            this._typeCarburant = typeCarburant;
         }
 
         public string getTypeVehicule()

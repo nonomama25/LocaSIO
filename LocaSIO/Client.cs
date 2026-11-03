@@ -8,9 +8,9 @@ namespace LocaSIO
 		private string _nom;
 		private string _prenom;
 		private string _email;
-		private string _telephone;
+		private int _telephone;
 
-		public Client(string nom, string prenom, string email, string telephone)
+		public Client(string nom, string prenom, string email, int telephone)
 		{
 			_nom = nom;
 			_prenom = prenom;

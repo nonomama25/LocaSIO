@@ -1,47 +1,55 @@
-﻿using System;
+﻿using locaSIO;
 using Microsoft.Data.SqlClient;
-using System.Collections.Generic;
+using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Security.Cryptography.X509Certificates;
 
 namespace LocaSIO
 {
     internal class AdoContrat
     {
-        public static AdoContrat()
+        public static ObservableCollection<Contrat> GetContrats()
         {
-            ObservableCollection<BorneArcade> AllContrat = new ObservableCollection<Article>();
+            ObservableCollection<Contrat> contrats = new ObservableCollection<Contrat>();
             try
             {
                 SqlDataReader reader;
                 SqlCommand cmd = new SqlCommand();
-                cmd.Connection = Ado.OpenSqlConnection();
+                cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
                 Ado.StatusSqlConnection();
-                cmd.CommandText = "SELECT * Contrat";
+                cmd.CommandText = "SELECT * FROM Contrats"; // On recupere tt les contrats
                 reader = cmd.ExecuteReader();
-                while (reader.Read())
+                while (reader.Read()) // Tant qu'il y a des contrats dans la bdd on les ajoute a la liste
                 {
-                    Debug.WriteLine("Loading Client DDB");
+                    Debug.WriteLine("Loading Contrat DDB");
                     Debug.WriteLine(reader.GetString(1) + " " + reader.GetString(2));
-                    contrat.Add(new Client(reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4))); // On ajoute le client a la liste
+                    contrats.Add(new Contrat(reader.GetDateTime(1), reader.GetDateTime(2), reader.GetString(3), reader.GetString(4))); // On ajoute le contrat a la liste
                 }
-            catch (SqlException ex)
+                Ado.CloseSqlConnection();
+            }// On ferme la connexion avec la bdd
+
+            catch (SqlException ex) //
             {
                 Console.WriteLine(ex.Message);
             }
-            return AllContrat;
+            return contrats; // On retourne la liste de contrats
         }
-        public static void CreateArticle()
+
+        public static void AddContrat(Contrat contrat)
         {
             try
             {
                 SqlCommand cmd = new SqlCommand();
-                cmd.Connection = Ado.OpenSqlConnection();
+                cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
                 Ado.StatusSqlConnection();
-                cmd.CommandText = "INSERT INTO Contrat (DateDebut, DateFin, Status, DistinguishedName) VALUES (@DateDebut, @DateFin, @Status, @DistinguishedName)";
+                cmd.CommandText = "INSERT INTO Contrats (DateDebut, DateFin, Statut, DistinguishedName) VALUES (@DateDebut, @DateFin, @Statut, @DistinguishedName)";
+                cmd.Parameters.AddWithValue("@DateDebut", contrat.getDateDebut());
+                cmd.Parameters.AddWithValue("@DateFin", contrat.getDateFin());
+                cmd.Parameters.AddWithValue("@Statut", contrat.GetStatut());
+                cmd.Parameters.AddWithValue("@DistinguishedName", contrat.GetDistinguishedName());
+                cmd.ExecuteNonQuery();
+                Ado.CloseSqlConnection(); // On ferme la connexion avec la bdd
             }
             catch (SqlException ex)
             {
@@ -49,14 +57,20 @@ namespace LocaSIO
             }
         }
 
-        public static void DeleteArticle()
+        public static void UpdateContrat(Contrat contrat)
         {
             try
             {
                 SqlCommand cmd = new SqlCommand();
-                cmd.Connection = Ado.OpenSqlConnection();
+                cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
                 Ado.StatusSqlConnection();
-                cmd.CommandText = "DELETE FROM Contrat WHERE Id = @Id";
+                cmd.CommandText = "UPDATE Contrats SET DateDebut = @DateDebut, DateFin = @DateFin, Statut = @Statut, DistinguishedName = @DistinguishedName WHERE DateDebut = @DateDebut AND DateFin = @DateFin AND Statut = @Statut AND DistinguishedName = @DistinguishedName";
+                cmd.Parameters.AddWithValue("@DateDebut", contrat.getDateDebut());
+                cmd.Parameters.AddWithValue("@DateFin", contrat.getDateFin());
+                cmd.Parameters.AddWithValue("@Statut", contrat.GetStatut());
+                cmd.Parameters.AddWithValue("@DistinguishedName", contrat.GetDistinguishedName());
+                cmd.ExecuteNonQuery();
+                Ado.CloseSqlConnection(); // On ferme la connexion avec la bdd
             }
             catch (SqlException ex)
             {
@@ -64,14 +78,20 @@ namespace LocaSIO
             }
         }
 
-        public static void UpdateArticle()
+        public static void DeleteContrat(Contrat contrat)
         {
             try
             {
                 SqlCommand cmd = new SqlCommand();
-                cmd.Connection = Ado.OpenSqlConnection();
+                cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
                 Ado.StatusSqlConnection();
-                cmd.CommandText = "UPDATE Contrat SET DateDebut = @DateDebut, DateFin = @DateFin, Status = @Status, DistinguishedName = @DistinguishedName WHERE Id = @Id";
+                cmd.CommandText = "DELETE FROM Contrats WHERE DateDebut = @DateDebut AND DateFin = @DateFin AND Statut = @Statut AND DistinguishedName = @DistinguishedName";
+                cmd.Parameters.AddWithValue("@DateDebut", contrat.getDateDebut());
+                cmd.Parameters.AddWithValue("@DateFin", contrat.getDateFin());
+                cmd.Parameters.AddWithValue("@Statut", contrat.GetStatut());
+                cmd.Parameters.AddWithValue("@DistinguishedName", contrat.GetDistinguishedName());
+                cmd.ExecuteNonQuery();
+                Ado.CloseSqlConnection(); // On ferme la connexion avec la bdd
             }
             catch (SqlException ex)
             {
@@ -80,3 +100,4 @@ namespace LocaSIO
         }
     }
 }
+

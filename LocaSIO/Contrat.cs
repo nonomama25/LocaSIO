@@ -6,10 +6,11 @@ namespace locaSIO
     {
         private DateTime _dateDebut;
         private DateTime _dateFin;
-        private StatutContrat _statut;
+
+        private  string _statut;
         private string _distinguishedName;
 
-        public Contrat(DateTime dateDebut, DateTime dateFin, StatutContrat statut, string distinguishedName)
+        public Contrat(DateTime dateDebut, DateTime dateFin, string statut, string distinguishedName)
         {
             _dateDebut = dateDebut;
             _dateFin = dateFin;
@@ -17,34 +18,34 @@ namespace locaSIO
             _distinguishedName = distinguishedName;
         }
 
-        public Datetime getDateDebut()
+        public DateTime getDateDebut()
         {
-            return _dateDebut
+            return _dateDebut;
         }
 
-        public void setDateDebut(DateTime )
+        public void setDateDebut(DateTime dateDebut)
         {
-            this._nom = nom;
+            this._dateDebut = dateDebut;
         }
 
-        public Datetime getDateFin()
+        public DateTime getDateFin()
         {
-            return _dateFin
+            return _dateFin;
         }
 
-        public void setDateFin(DateTime )
+        public void setDateFin(DateTime dateFin)
         {
-            this._dateFin = DateFin;
+            this._dateFin = dateFin;
         }
 
-        public StatutContrat GetStatut()
+        public string GetStatut()
         {
-            return _statut
+            return _statut;
         }
 
         public string GetDistinguishedName()
         {
-            return _distinguishedName
+            return _distinguishedName;
         }
 
        
