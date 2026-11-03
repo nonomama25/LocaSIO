@@ -1,5 +1,4 @@
-﻿using locaSIO;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -33,7 +32,7 @@ namespace LocaSIO
             {
                 Console.WriteLine(ex.Message);
             }
-            return contrats; // On retourne la liste de contrats
+            return clients; // On retourne la liste de clients
         }
 
         public static void AddContrat(Contrat contrat)
