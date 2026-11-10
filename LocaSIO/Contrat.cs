@@ -19,7 +19,7 @@ namespace locaSIO
 
         public Datetime getDateDebut()
         {
-            return _dateDebut
+            return _dateDebut;
         }
 
         public void setDateDebut(DateTime )
@@ -29,7 +29,7 @@ namespace locaSIO
 
         public Datetime getDateFin()
         {
-            return _dateFin
+            return _dateFin;
         }
 
         public void setDateFin(DateTime )
@@ -39,7 +39,7 @@ namespace locaSIO
 
         public StatutContrat GetStatut(StatutContrat)
         {
-            return _statut
+            return _statut;
         }
 
         public void setStatut(StatutContrat )
@@ -49,7 +49,7 @@ namespace locaSIO
 
         public string GetDistinguishedName(distinguishedName)
         {
-            return _distinguishedName
+            return _distinguishedName;
         }
 
         public void setDistinguishedName(distinguishedName)
@@ -59,9 +59,9 @@ namespace locaSIO
 
         internal class AdoContrat
         {
-            static void Main()
+            static void Main();
         }
-            string connectionString =
+        string connectionString;
     }
 
 }
