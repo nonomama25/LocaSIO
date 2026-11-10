@@ -4,6 +4,11 @@ namespace LocaSIO
 	public class Article
 	{
 		public int Id { get; set; }
+		public string Libelle => _libelle;
+		public int TarifJournalier => _tarifJournalier;
+		public bool Disponible => _disponible;
+		public int Caution => _caution;
+		public int AgenceId => _agenceId;
 		private string _libelle;
 		private int _tarifJournalier;
 		private bool _disponible;

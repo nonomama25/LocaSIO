@@ -5,6 +5,11 @@ namespace LocaSIO
 
 	internal class Client
 	{
+		public int Id { get; private set; }
+		public string Nom => _nom;
+		public string Prenom => _prenom;
+		public string Email => _email;
+		public int Telephone => _telephone;
 		private string _nom;
 		private string _prenom;
 		private string _email;
@@ -16,6 +21,11 @@ namespace LocaSIO
 			_prenom = prenom;
 			_email = email;
 			_telephone = telephone;
+		}
+
+		public void setID(int id)
+		{
+			Id = id;
 		}
 
 		public string getNom()

@@ -18,20 +18,22 @@ namespace LocaSIO
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
                 Ado.StatusSqlConnection();
-                cmd.CommandText = "SELECT * FROM Clients"; // On recupere tt les clients
+                cmd.CommandText = "SELECT Id, Nom, Prenom, Email, NumeroTel FROM Clients";
                 reader = cmd.ExecuteReader();
                 while (reader.Read()) // Tant qu'il y a des clients dans la bdd on les ajoute a la liste
                 {
                     Debug.WriteLine("Loading Client DDB");
-                    Debug.WriteLine(reader.GetString(1) + " " + reader.GetString(2));
-                    AllClient.Add(new Client(reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetInt32(4))); // On ajoute le client a la liste
+                    var client = new Client(reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetInt32(4));
+                    client.setID(reader.GetInt32(0));
+                    AllClient.Add(client);
                 }
                 Ado.CloseSqlConnection();
             }// On ferme la connexion avec la bdd
 
-            catch (SqlException ex) //
+            catch (SqlException)
             {
-                Console.WriteLine(ex.Message);
+                Ado.CloseSqlConnection();
+                throw;
             }
             return AllClient; // On retourne la liste de clients
         }
@@ -43,17 +45,18 @@ namespace LocaSIO
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
                 Ado.StatusSqlConnection();
-                cmd.CommandText = "INSERT INTO Clients (Nom, Prenom, Email, Telephone) VALUES (@Nom, @Prenom, @Email, @Telephone)";
+                cmd.CommandText = "INSERT INTO Clients (Nom, Prenom, Email, NumeroTel) VALUES (@Nom, @Prenom, @Email, @NumeroTel)";
                 cmd.Parameters.AddWithValue("@Nom", client.getNom());
                 cmd.Parameters.AddWithValue("@Prenom", client.getPrenom());
                 cmd.Parameters.AddWithValue("@Email", client.getEmail());
-                cmd.Parameters.AddWithValue("@Telephone", client.getTelephone());
+                cmd.Parameters.AddWithValue("@numeroTel", client.getTelephone());
                 cmd.ExecuteNonQuery();
                 Ado.CloseSqlConnection(); // On ferme la connexion avec la bdd
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
-                Console.WriteLine(ex.Message);
+                Ado.CloseSqlConnection();
+                throw;
             }
         }
 
@@ -64,17 +67,18 @@ namespace LocaSIO
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
                 Ado.StatusSqlConnection();
-                cmd.CommandText = "UPDATE Clients SET Nom = @Nom, Prenom = @Prenom, Email = @Email, Telephone = @Telephone WHERE Nom = @Nom AND Prenom = @Prenom AND Email = @Email AND Telephone = @Telephone";
+                cmd.CommandText = "UPDATE Clients SET Nom = @Nom, Prenom = @Prenom, Email = @Email, NumeroTel = @NumeroTel WHERE Nom = @Nom AND Prenom = @Prenom AND Email = @Email AND NumeroTel = @NumeroTel";
                 cmd.Parameters.AddWithValue("@Nom", client.getNom());
                 cmd.Parameters.AddWithValue("@Prenom", client.getPrenom());
                 cmd.Parameters.AddWithValue("@Email", client.getEmail());
-                cmd.Parameters.AddWithValue("@Telephone", client.getTelephone());
+                cmd.Parameters.AddWithValue("@NumeroTel", client.getTelephone());
                 cmd.ExecuteNonQuery();
                 Ado.CloseSqlConnection(); // On ferme la connexion avec la bdd
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
-                Console.WriteLine(ex.Message);
+                Ado.CloseSqlConnection();
+                throw;
             }
         }
 
@@ -85,17 +89,15 @@ namespace LocaSIO
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
                 Ado.StatusSqlConnection();
-                cmd.CommandText = "DELETE FROM Clients WHERE Nom = @Nom AND Prenom = @Prenom AND Email = @Email AND Telephone = @Telephone";
-                cmd.Parameters.AddWithValue("@Nom", client.getNom());
-                cmd.Parameters.AddWithValue("@Prenom", client.getPrenom());
-                cmd.Parameters.AddWithValue("@Email", client.getEmail());
-                cmd.Parameters.AddWithValue("@Telephone", client.getTelephone());
+                cmd.CommandText = "DELETE FROM Clients WHERE Id = @Id";
+                cmd.Parameters.AddWithValue("@Id", client.Id);
                 cmd.ExecuteNonQuery();
                 Ado.CloseSqlConnection(); // On ferme la connexion avec la bdd
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
-                Console.WriteLine(ex.Message);
+                Ado.CloseSqlConnection();
+                throw;
             }
         }
     }

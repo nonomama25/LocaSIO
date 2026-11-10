@@ -38,7 +38,7 @@
                         <Button Content="Créer" Click="CreateClient_Click" Padding="14,5" Margin="0,0,8,0" /><Button Content="Supprimer la sélection" Click="DeleteClient_Click" Padding="14,5" Margin="0,0,8,0" /><Button Content="Actualiser" Click="RefreshClients_Click" Padding="14,5" />
                     </WrapPanel>
                     <DataGrid x:Name="ClientsGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single">
-                        <DataGrid.Columns><DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="*" /><DataGridTextColumn Header="Prénom" Binding="{Binding Prenom}" Width="*" /><DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="*" /><DataGridTextColumn Header="Téléphone" Binding="{Binding Telephone}" Width="*" /></DataGrid.Columns>
+                        <DataGrid.Columns><DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="60" /><DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="*" /><DataGridTextColumn Header="Prénom" Binding="{Binding Prenom}" Width="*" /><DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="*" /><DataGridTextColumn Header="Téléphone" Binding="{Binding Telephone}" Width="*" /></DataGrid.Columns>
                     </DataGrid>
                 </Grid>
             </TabItem>

@@ -19,19 +19,19 @@ namespace LocaSIO
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
                 Ado.StatusSqlConnection();
-                cmd.CommandText = "SELECT * FROM Agences"; // On recupere tt les agences
+                cmd.CommandText = "SELECT Id, Ville, UO FROM Agences";
                 reader = cmd.ExecuteReader();
                 while (reader.Read()) // Tant qu'il y a des agences dans la bdd on les ajoute a la liste
                 {
                     Debug.WriteLine("Loading Agence DDB");
-                    Debug.WriteLine(reader.GetString(1) + " " + reader.GetInt32(2));
-                    agences.Add(new Agence(reader.GetString(1), reader.GetInt32(2), reader.GetString(3))); // On ajoute l'agence a la liste
+                    agences.Add(new Agence(reader.GetString(1), reader.GetString(2)));
                 }
                 Ado.CloseSqlConnection();
             }// On ferme la connexion avec la bdd
-            catch (SqlException ex) //
+            catch (SqlException)
             {
-                Console.WriteLine(ex.Message);
+                Ado.CloseSqlConnection();
+                throw;
             }
             return agences; // On retourne la liste d'agences
         }
@@ -48,9 +48,10 @@ namespace LocaSIO
                 cmd.ExecuteNonQuery();
                 Ado.CloseSqlConnection(); // On ferme la connexion avec la bdd
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
-                Console.WriteLine(ex.Message);
+                Ado.CloseSqlConnection();
+                throw;
             }
         }
         public static void DeleteAgence(Agence agence)
@@ -60,15 +61,15 @@ namespace LocaSIO
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
                 Ado.StatusSqlConnection();
-                cmd.CommandText = "DELETE FROM Agences WHERE Ville = @Ville AND UO = @UO";
-                cmd.Parameters.AddWithValue("@Ville", agence.getVille());
-                cmd.Parameters.AddWithValue("@UO", agence.getUO());
+                cmd.CommandText = "DELETE FROM Agences WHERE Id = @Id";
+                cmd.Parameters.AddWithValue("@ville", agence.getVille());
                 cmd.ExecuteNonQuery();
                 Ado.CloseSqlConnection(); // On ferme la connexion avec la bdd
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
-                Console.WriteLine(ex.Message);
+                Ado.CloseSqlConnection();
+                throw;
             }
         }
     }

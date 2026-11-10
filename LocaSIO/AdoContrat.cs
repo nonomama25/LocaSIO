@@ -28,9 +28,10 @@ namespace LocaSIO
                 Ado.CloseSqlConnection();
             }// On ferme la connexion avec la bdd
 
-            catch (SqlException ex) //
+            catch (SqlException)
             {
-                Console.WriteLine(ex.Message);
+                Ado.CloseSqlConnection();
+                throw;
             }
             return contrats; // On retourne la liste de contrats
         }
@@ -50,9 +51,10 @@ namespace LocaSIO
                 cmd.ExecuteNonQuery();
                 Ado.CloseSqlConnection(); // On ferme la connexion avec la bdd
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
-                Console.WriteLine(ex.Message);
+                Ado.CloseSqlConnection();
+                throw;
             }
         }
 
@@ -71,9 +73,10 @@ namespace LocaSIO
                 cmd.ExecuteNonQuery();
                 Ado.CloseSqlConnection();
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
-                Console.WriteLine(ex.Message);
+                Ado.CloseSqlConnection();
+                throw;
             }
         }
 

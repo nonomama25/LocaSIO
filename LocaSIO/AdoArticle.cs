@@ -21,19 +21,21 @@ namespace LocaSIO
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
                 Ado.StatusSqlConnection();
-                cmd.CommandText = "SELECT * FROM Article"; // On recupere tt les articles
+                cmd.CommandText = "SELECT Id, Libelle, TarifJournalier, Disponible, Caution, AgenceID FROM Article";
                 reader = cmd.ExecuteReader();
                 while (reader.Read()) // Tant qu'il y a des articles dans la bdd on les ajoute a la liste
                 {
                     Debug.WriteLine("Loading Article DDB");
-                    Debug.WriteLine(reader.GetString(1) + " " + reader.GetInt32(2));
-                    articles.Add(new Article(reader.GetString(1), reader.GetInt32(2), reader.GetBoolean(3), reader.GetInt32(4), reader.GetInt32(5))); // On ajoute l'article a la liste
+                    var article = new Article(reader.GetString(1), reader.GetInt32(2), reader.GetBoolean(3), reader.GetInt32(4), reader.GetInt32(5));
+                    article.setID(reader.GetInt32(0));
+                    articles.Add(article);
                 }
                 Ado.CloseSqlConnection();
             }// On ferme la connexion avec la bdd
-            catch (SqlException ex) //
+            catch (SqlException)
             {
-                Console.WriteLine(ex.Message);
+                Ado.CloseSqlConnection();
+                throw;
             }
             return articles; // On retourne la liste d'articles
         }
@@ -53,9 +55,10 @@ namespace LocaSIO
                 cmd.ExecuteNonQuery();
                 Ado.CloseSqlConnection();
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
-                Console.WriteLine(ex.Message);
+                Ado.CloseSqlConnection();
+                throw;
             }
         }
 
@@ -71,9 +74,10 @@ namespace LocaSIO
                 cmd.ExecuteNonQuery();
                 Ado.CloseSqlConnection();
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
-                Console.WriteLine(ex.Message);
+                Ado.CloseSqlConnection();
+                throw;
             }
         }
 
@@ -94,9 +98,10 @@ namespace LocaSIO
                 cmd.ExecuteNonQuery();
                 Ado.CloseSqlConnection();
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
-                Console.WriteLine(ex.Message);
+                Ado.CloseSqlConnection();
+                throw;
             }
         }
     }

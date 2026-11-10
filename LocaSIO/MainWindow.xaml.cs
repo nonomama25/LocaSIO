@@ -25,8 +25,10 @@ namespace LocaSIO
 
         private void CreateAgence_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(AgenceVilleTextBox.Text)) { SetStatus("La ville est obligatoire."); return; }
-            Execute(() => { AdoAgence.AddAgence(new Agence(AgenceVilleTextBox.Text.Trim(), 0, "")); RefreshAgences_Click(sender, e); AgenceVilleTextBox.Clear(); }, "Agence créée.");
+            string ville = AgenceVilleTextBox.Text;
+            Agence agence = new Agence(ville, "");
+            AdoAgence.AddAgence(agence);
+            RefreshAgences_Click(sender, e);
         }
 
         private void DeleteAgence_Click(object sender, RoutedEventArgs e)
@@ -63,9 +65,9 @@ namespace LocaSIO
         private void Execute(Action action, string successMessage)
         {
             try { action(); SetStatus(successMessage); }
-            catch (Exception exception) { SetStatus($"Erreur : {exception.Message}"); }
+            catch (Exception exception) { SetStatus($"Erreur : {exception.GetBaseException().Message}"); }
         }
 
-        private void SetStatus(string message) => StatusTextBlock.Text = message
+        private void SetStatus(string message) => StatusTextBlock.Text = message;
     }
 }

@@ -3,33 +3,29 @@ namespace LocaSIO
 {
 	public class Agence
 	{
-		private int Id { get; set; }
-		private string _ville;
-		private string _UO;
+		private string Ville;
+		private string UO;
 
 
-		public Agence(string ville, int id, string uo)
+		public Agence(string ville, string uo)
 		{
-			Id = id;
-			_ville = ville;
-			_UO = uo;
+			this.Ville = ville;
+			this.UO = uo;
 		}
-
-		public string Ville => _ville;
 
 		public string getVille()
 		{
-			return _ville;
+			return Ville;
         }
 
 		public void setVille(string ville)
 		{
-			this._ville = ville;
+			this.Ville = ville;
         }
 
 		public string getUO()
 		{
-            return _UO;
+            return UO;
         }
     }
 }
