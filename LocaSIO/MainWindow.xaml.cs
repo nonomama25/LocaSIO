@@ -65,6 +65,6 @@ namespace LocaSIO
             catch (Exception exception) { SetStatus($"Erreur : {exception.Message}"); }
         }
 
-        private void SetStatus(string message) => StatusTextBlock.Text = message;
+        private void SetStatus(string message) => StatusTextBlock.Text = message
     }
 }
