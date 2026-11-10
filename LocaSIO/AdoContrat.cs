@@ -61,7 +61,7 @@ namespace LocaSIO
             try
             {
                 SqlCommand cmd = new SqlCommand();
-                cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
+                cmd.Connection = Ado.OpenSqlConnection(); 
                 Ado.StatusSqlConnection();
                 cmd.CommandText = "UPDATE Contrats SET DateDebut = @DateDebut, DateFin = @DateFin, Statut = @Statut, DistinguishedName = @DistinguishedName WHERE DateDebut = @DateDebut AND DateFin = @DateFin AND Statut = @Statut AND DistinguishedName = @DistinguishedName";
                 cmd.Parameters.AddWithValue("@DateDebut", contrat.getDateDebut());
@@ -69,7 +69,7 @@ namespace LocaSIO
                 cmd.Parameters.AddWithValue("@Statut", contrat.GetStatut());
                 cmd.Parameters.AddWithValue("@DistinguishedName", contrat.GetDistinguishedName());
                 cmd.ExecuteNonQuery();
-                Ado.CloseSqlConnection(); // On ferme la connexion avec la bdd
+                Ado.CloseSqlConnection();
             }
             catch (SqlException ex)
             {
@@ -82,7 +82,7 @@ namespace LocaSIO
             try
             {
                 SqlCommand cmd = new SqlCommand();
-                cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
+                cmd.Connection = Ado.OpenSqlConnection();
                 Ado.StatusSqlConnection();
                 cmd.CommandText = "DELETE FROM Contrats WHERE DateDebut = @DateDebut AND DateFin = @DateFin AND Statut = @Statut AND DistinguishedName = @DistinguishedName";
                 cmd.Parameters.AddWithValue("@DateDebut", contrat.getDateDebut());
