@@ -18,8 +18,15 @@ namespace LocaSIO
 			_caution = caution;
 			_agenceId = agenceId;
 		}
-
-		public string getLibelle()
+		public int getID()
+        {
+            return Id;
+        }
+		public void setID(int id)
+        {
+            Id = id;
+        }
+        public string getLibelle()
 		{
 			return _libelle;
 		}
@@ -59,12 +66,12 @@ namespace LocaSIO
 			_caution = caution;
 		}
 
-		public int getAgenceId()
+		public int getAgenceID()
 		{
 			return _agenceId;
 		}
 
-		public void setAgenceId(int agenceId)
+		public void setAgenceID(int agenceId)
 		{
 			_agenceId = agenceId;
 		}

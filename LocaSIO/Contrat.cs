@@ -1,16 +1,20 @@
 ﻿using System;
 
-namespace locaSIO
+namespace LocaSIO
 {
     internal class Contrat
     {
         private DateTime _dateDebut;
         private DateTime _dateFin;
 
-        private  string _statut;
+        private string _statut;
         private string _distinguishedName;
 
-        public Contrat(DateTime dateDebut, DateTime dateFin, string statut, string distinguishedName)
+        public Contrat(
+            DateTime dateDebut,
+            DateTime dateFin,
+            string statut,
+            string distinguishedName)
         {
             _dateDebut = dateDebut;
             _dateFin = dateFin;
@@ -25,7 +29,7 @@ namespace locaSIO
 
         public void setDateDebut(DateTime dateDebut)
         {
-            this._dateDebut = dateDebut;
+            _dateDebut = dateDebut;
         }
 
         public DateTime getDateFin()
@@ -35,7 +39,7 @@ namespace locaSIO
 
         public void setDateFin(DateTime dateFin)
         {
-            this._dateFin = dateFin;
+            _dateFin = dateFin;
         }
 
         public string GetStatut()
@@ -47,8 +51,5 @@ namespace locaSIO
         {
             return _distinguishedName;
         }
-
-       
     }
-
 }

@@ -6,12 +6,11 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace LocaSIO
 {
-    internal class AdoClient
+    internal class AdoClient : Ado
     {
-        public static ObservableCollection<Client> AllClient = new ObservableCollection<Client>();
-
         public static ObservableCollection<Client> GetClients()
         {
+            ObservableCollection<Client> AllClient = new ObservableCollection<Client>();
             AllClient.Clear();
             try
             {
