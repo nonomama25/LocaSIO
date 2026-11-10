@@ -3,7 +3,6 @@ namespace LocaSIO
 {
 	public class Article
 	{
-		public int Id { get; set; }
 		public string Libelle => _libelle;
 		public int TarifJournalier => _tarifJournalier;
 		public bool Disponible => _disponible;
@@ -23,14 +22,7 @@ namespace LocaSIO
 			_caution = caution;
 			_agenceId = agenceId;
 		}
-		public int getID()
-        {
-            return Id;
-        }
-		public void setID(int id)
-        {
-            Id = id;
-        }
+
         public string getLibelle()
 		{
 			return _libelle;

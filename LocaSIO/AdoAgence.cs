@@ -15,38 +15,41 @@ namespace LocaSIO
             ObservableCollection<Agence> agences = new ObservableCollection<Agence>();
             try
             {
-                SqlDataReader reader;
                 SqlCommand cmd = new SqlCommand();
-                cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
-                Ado.StatusSqlConnection();
+                cmd.Connection = Ado.OpenSqlConnection();
                 cmd.CommandText = "SELECT Id, Ville, UO FROM Agences";
-                reader = cmd.ExecuteReader();
-                while (reader.Read()) // Tant qu'il y a des agences dans la bdd on les ajoute a la liste
+                using (SqlDataReader reader = cmd.ExecuteReader())
                 {
-                    Debug.WriteLine("Loading Agence DDB");
-                    agences.Add(new Agence(reader.GetString(1), reader.GetString(2)));
+                    while (reader.Read())
+                    {
+                        // On utilise le constructeur avec l'ID
+                        agences.Add(new Agence(reader.GetInt32(0), reader.GetString(1), reader.GetString(2)));
+                    }
                 }
                 Ado.CloseSqlConnection();
-            }// On ferme la connexion avec la bdd
+            }
             catch (SqlException)
             {
                 Ado.CloseSqlConnection();
                 throw;
             }
-            return agences; // On retourne la liste d'agences
+            return agences;
         }
+
         public static void AddAgence(Agence agence)
         {
             try
             {
                 SqlCommand cmd = new SqlCommand();
-                cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
-                Ado.StatusSqlConnection();
+                cmd.Connection = Ado.OpenSqlConnection();
+
                 cmd.CommandText = "INSERT INTO Agences (Ville, UO) VALUES (@Ville, @UO)";
-                cmd.Parameters.AddWithValue("@Ville", agence.getVille());
-                cmd.Parameters.AddWithValue("@UO", agence.getUO());
+
+                cmd.Parameters.AddWithValue("@Ville", agence.Ville); // Utilise la propriété .Ville sans parenthèses
+                cmd.Parameters.AddWithValue("@UO", agence.UO);       // Utilise la propriété .UO sans parenthèses
+
                 cmd.ExecuteNonQuery();
-                Ado.CloseSqlConnection(); // On ferme la connexion avec la bdd
+                Ado.CloseSqlConnection();
             }
             catch (SqlException)
             {
@@ -54,17 +57,18 @@ namespace LocaSIO
                 throw;
             }
         }
+
         public static void DeleteAgence(Agence agence)
         {
             try
             {
                 SqlCommand cmd = new SqlCommand();
-                cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
-                Ado.StatusSqlConnection();
+                cmd.Connection = Ado.OpenSqlConnection();
+                // Maintenant que l'Id existe sur l'objet Agence, on peut supprimer proprement par l'Id !
                 cmd.CommandText = "DELETE FROM Agences WHERE Id = @Id";
-                cmd.Parameters.AddWithValue("@ville", agence.getVille());
+                cmd.Parameters.AddWithValue("@Id", agence.Id);
                 cmd.ExecuteNonQuery();
-                Ado.CloseSqlConnection(); // On ferme la connexion avec la bdd
+                Ado.CloseSqlConnection();
             }
             catch (SqlException)
             {

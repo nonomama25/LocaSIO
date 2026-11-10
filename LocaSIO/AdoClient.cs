@@ -23,8 +23,7 @@ namespace LocaSIO
                 while (reader.Read()) // Tant qu'il y a des clients dans la bdd on les ajoute a la liste
                 {
                     Debug.WriteLine("Loading Client DDB");
-                    var client = new Client(reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetInt32(4));
-                    client.setID(reader.GetInt32(0));
+                    var client = new Client(reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4));
                     AllClient.Add(client);
                 }
                 Ado.CloseSqlConnection();
@@ -46,10 +45,10 @@ namespace LocaSIO
                 cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
                 Ado.StatusSqlConnection();
                 cmd.CommandText = "INSERT INTO Clients (Nom, Prenom, Email, NumeroTel) VALUES (@Nom, @Prenom, @Email, @NumeroTel)";
-                cmd.Parameters.AddWithValue("@Nom", client.getNom());
-                cmd.Parameters.AddWithValue("@Prenom", client.getPrenom());
-                cmd.Parameters.AddWithValue("@Email", client.getEmail());
-                cmd.Parameters.AddWithValue("@numeroTel", client.getTelephone());
+                cmd.Parameters.AddWithValue("@Nom", client.Nom);
+                cmd.Parameters.AddWithValue("@Prenom", client.Prenom);
+                cmd.Parameters.AddWithValue("@Email", client.Email);
+                cmd.Parameters.AddWithValue("@numeroTel", client.Telephone);
                 cmd.ExecuteNonQuery();
                 Ado.CloseSqlConnection(); // On ferme la connexion avec la bdd
             }
@@ -68,10 +67,10 @@ namespace LocaSIO
                 cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
                 Ado.StatusSqlConnection();
                 cmd.CommandText = "UPDATE Clients SET Nom = @Nom, Prenom = @Prenom, Email = @Email, NumeroTel = @NumeroTel WHERE Nom = @Nom AND Prenom = @Prenom AND Email = @Email AND NumeroTel = @NumeroTel";
-                cmd.Parameters.AddWithValue("@Nom", client.getNom());
-                cmd.Parameters.AddWithValue("@Prenom", client.getPrenom());
-                cmd.Parameters.AddWithValue("@Email", client.getEmail());
-                cmd.Parameters.AddWithValue("@NumeroTel", client.getTelephone());
+                cmd.Parameters.AddWithValue("@Nom", client.Nom);
+                cmd.Parameters.AddWithValue("@Prenom", client.Prenom);
+                cmd.Parameters.AddWithValue("@Email", client.Email);
+                cmd.Parameters.AddWithValue("@NumeroTel", client.Telephone);
                 cmd.ExecuteNonQuery();
                 Ado.CloseSqlConnection(); // On ferme la connexion avec la bdd
             }

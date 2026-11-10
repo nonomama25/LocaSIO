@@ -27,7 +27,6 @@ namespace LocaSIO
                 {
                     Debug.WriteLine("Loading Article DDB");
                     var article = new Article(reader.GetString(1), reader.GetInt32(2), reader.GetBoolean(3), reader.GetInt32(4), reader.GetInt32(5));
-                    article.setID(reader.GetInt32(0));
                     articles.Add(article);
                 }
                 Ado.CloseSqlConnection();
