@@ -6,52 +6,38 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security.Cryptography.X509Certificates;
 
 namespace LocaSIO
 {
-	internal class AdoArticle
-	{
-        public static AdoArticle()
+    internal class AdoArticle : Ado
+    {
+        public static ObservableCollection<Article> GetArticles()
         {
-            ObservableCollection<Article> AllArticle = new ObservableCollection<Article>();
+            ObservableCollection<Article> articles = new ObservableCollection<Article>();
             try
             {
                 SqlDataReader reader;
                 SqlCommand cmd = new SqlCommand();
-                cmd.Connection = Ado.OpenSqlConnection();
+                cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
                 Ado.StatusSqlConnection();
-                cmd.CommandText = "SELECT * Article";
+                cmd.CommandText = "SELECT * FROM Article"; // On recupere tt les articles
                 reader = cmd.ExecuteReader();
-                while (reader.Read())
+                while (reader.Read()) // Tant qu'il y a des articles dans la bdd on les ajoute a la liste
                 {
                     Debug.WriteLine("Loading Article DDB");
-                    Debug.WriteLine(reader.GetString(1) + " " + reader.GetString(2));
-                    if (AllArticle.GetType() == typeof(ArticleChantier))
-                    {
-                        AllArticle.Add(new ArticleChantier(reader.GetString(1), reader.GetInt32(2)));
-                    }
-                    else if (AllArticle.GetType() == typeof(ArticleSport))
-                    {
-                        AllArticle.Add(new ArticleSport(reader.GetString(1), reader.GetInt32(2), reader.GetString(3)));
-                    }
-                    else if (AllArticle.GetType() == typeof(ArticleVehicule))
-                    {
-                        AllArticle.Add(new ArticleVehicule(reader.GetString(1), reader.GetInt32(2), reader.GetString(3)));
-                    }
-                    Ado.CloseSqlConnection();
-                    else if (AllArticle.GetType() == typeof(ArticleEvenement))
-                    {
-                        AllArticle.Add(new ArticleEvenement(reader.GetString(1), reader.GetInt32(2), reader.GetBoolean(3), reader.GetInt32(4), reader.GetInt32(5)));
-                    }
+                    Debug.WriteLine(reader.GetString(1) + " " + reader.GetInt32(2));
+                    articles.Add(new Article(reader.GetString(1), reader.GetInt32(2), reader.GetBoolean(3), reader.GetInt32(4), reader.GetInt32(5))); // On ajoute l'article a la liste
                 }
-            }
-            catch (SqlException ex)
+                Ado.CloseSqlConnection();
+            }// On ferme la connexion avec la bdd
+            catch (SqlException ex) //
             {
                 Console.WriteLine(ex.Message);
             }
-            return AllArticle;
+            return articles; // On retourne la liste d'articles
         }
-        public static void CreateArticle()
+        public static void AddArticle(Article article)
         {
             try
             {
@@ -59,6 +45,13 @@ namespace LocaSIO
                 cmd.Connection = Ado.OpenSqlConnection();
                 Ado.StatusSqlConnection();
                 cmd.CommandText = "INSERT INTO Article (Libelle, TarifJournalier, Disponible, Caution, AgenceID) VALUES (@Libelle, @TarifJournalier, @Disponible, @Caution, @AgenceID)";
+                cmd.Parameters.AddWithValue("@Libelle", article.getLibelle());
+                cmd.Parameters.AddWithValue("@TarifJournalier", article.getTarifJournalier());
+                cmd.Parameters.AddWithValue("@Disponible", article.getDisponible());
+                cmd.Parameters.AddWithValue("@Caution", article.getCaution());
+                cmd.Parameters.AddWithValue("@AgenceID", article.getAgenceID());
+                cmd.ExecuteNonQuery();
+                Ado.CloseSqlConnection();
             }
             catch (SqlException ex)
             {
@@ -66,7 +59,7 @@ namespace LocaSIO
             }
         }
 
-        public static void DeleteArticle()
+        public static void DeleteArticle(Article article)
         {
             try
             {
@@ -74,6 +67,9 @@ namespace LocaSIO
                 cmd.Connection = Ado.OpenSqlConnection();
                 Ado.StatusSqlConnection();
                 cmd.CommandText = "DELETE FROM Article WHERE Id = @Id";
+                cmd.Parameters.AddWithValue("@Id", article.getID());
+                cmd.ExecuteNonQuery();
+                Ado.CloseSqlConnection();
             }
             catch (SqlException ex)
             {
@@ -81,7 +77,7 @@ namespace LocaSIO
             }
         }
 
-        public static void UpdateArticle()
+        public static void UpdateArticle(Article article)
         {
             try
             {
@@ -89,11 +85,19 @@ namespace LocaSIO
                 cmd.Connection = Ado.OpenSqlConnection();
                 Ado.StatusSqlConnection();
                 cmd.CommandText = "UPDATE Article SET Libelle = @Libelle, TarifJournalier = @TarifJournalier, Disponible = @Disponible, Caution = @Caution, AgenceID = @AgenceID WHERE Id = @Id";
+                cmd.Parameters.AddWithValue("@Libelle", article.getLibelle());
+                cmd.Parameters.AddWithValue("@TarifJournalier", article.getTarifJournalier());
+                cmd.Parameters.AddWithValue("@Disponible", article.getDisponible());
+                cmd.Parameters.AddWithValue("@Caution", article.getCaution());
+                cmd.Parameters.AddWithValue("@AgenceID", article.getAgenceID());
+                cmd.Parameters.AddWithValue("@Id", article.getID());
+                cmd.ExecuteNonQuery();
+                Ado.CloseSqlConnection();
             }
             catch (SqlException ex)
             {
                 Console.WriteLine(ex.Message);
             }
-}
-	}
+        }
+    }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Windows;
+using System.Collections.ObjectModel;
 
 namespace LocaSIO
 {
@@ -25,7 +26,7 @@ namespace LocaSIO
         private void CreateAgence_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(AgenceVilleTextBox.Text)) { SetStatus("La ville est obligatoire."); return; }
-            Execute(() => { AdoAgence.AddAgence(new Agence(AgenceVilleTextBox.Text.Trim())); RefreshAgences_Click(sender, e); AgenceVilleTextBox.Clear(); }, "Agence créée.");
+            Execute(() => { AdoAgence.AddAgence(new Agence(AgenceVilleTextBox.Text.Trim(), 0, "")); RefreshAgences_Click(sender, e); AgenceVilleTextBox.Clear(); }, "Agence créée.");
         }
 
         private void DeleteAgence_Click(object sender, RoutedEventArgs e)

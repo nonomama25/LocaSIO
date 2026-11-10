@@ -32,7 +32,7 @@ namespace LocaSIO
             {
                 Console.WriteLine(ex.Message);
             }
-            return clients; // On retourne la liste de clients
+            return contrats; // On retourne la liste de contrats
         }
 
         public static void AddContrat(Contrat contrat)
