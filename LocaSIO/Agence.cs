@@ -1,35 +1,22 @@
-﻿using System;
-namespace LocaSIO
+﻿namespace LocaSIO
 {
-	public class Agence
-	{
-		private int Id { get; set; }
-		private string _ville;
-		private string _UO;
+    public class Agence
+    {
+        public int Id { get; set; }
+        public string Ville { get; set; }
+        public string UO { get; set; }
 
-
-		public Agence(string ville, int id, string uo)
-		{
-			Id = id;
-			_ville = ville;
-			_UO = uo;
-		}
-
-		public string Ville => _ville;
-
-		public string getVille()
-		{
-			return _ville;
+        public Agence(int id, string ville, string uo)
+        {
+            Id = id;
+            Ville = ville;
+            UO = uo;
         }
 
-		public void setVille(string ville)
-		{
-			this._ville = ville;
-        }
-
-		public string getUO()
-		{
-            return _UO;
+        public Agence(string ville, string uo)
+        {
+            Ville = ville;
+            UO = uo;
         }
     }
 }

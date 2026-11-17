@@ -15,60 +15,65 @@ namespace LocaSIO
             ObservableCollection<Agence> agences = new ObservableCollection<Agence>();
             try
             {
-                SqlDataReader reader;
                 SqlCommand cmd = new SqlCommand();
-                cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
-                Ado.StatusSqlConnection();
-                cmd.CommandText = "SELECT * FROM Agences"; // On recupere tt les agences
-                reader = cmd.ExecuteReader();
-                while (reader.Read()) // Tant qu'il y a des agences dans la bdd on les ajoute a la liste
+                cmd.Connection = Ado.OpenSqlConnection();
+                cmd.CommandText = "SELECT Id, Ville, UO FROM Agences";
+                using (SqlDataReader reader = cmd.ExecuteReader())
                 {
-                    Debug.WriteLine("Loading Agence DDB");
-                    Debug.WriteLine(reader.GetString(1) + " " + reader.GetInt32(2));
-                    agences.Add(new Agence(reader.GetString(1), reader.GetInt32(2), reader.GetString(3))); // On ajoute l'agence a la liste
+                    while (reader.Read())
+                    {
+                        // On utilise le constructeur avec l'ID
+                        agences.Add(new Agence(reader.GetInt32(0), reader.GetString(1), reader.GetString(2)));
+                    }
                 }
                 Ado.CloseSqlConnection();
-            }// On ferme la connexion avec la bdd
-            catch (SqlException ex) //
-            {
-                Console.WriteLine(ex.Message);
             }
-            return agences; // On retourne la liste d'agences
+            catch (SqlException)
+            {
+                Ado.CloseSqlConnection();
+                throw;
+            }
+            return agences;
         }
+
         public static void AddAgence(Agence agence)
         {
             try
             {
                 SqlCommand cmd = new SqlCommand();
-                cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
-                Ado.StatusSqlConnection();
+                cmd.Connection = Ado.OpenSqlConnection();
+
                 cmd.CommandText = "INSERT INTO Agences (Ville, UO) VALUES (@Ville, @UO)";
-                cmd.Parameters.AddWithValue("@Ville", agence.getVille());
-                cmd.Parameters.AddWithValue("@UO", agence.getUO());
+
+                cmd.Parameters.AddWithValue("@Ville", agence.Ville); // Utilise la propriété .Ville sans parenthèses
+                cmd.Parameters.AddWithValue("@UO", agence.UO);       // Utilise la propriété .UO sans parenthèses
+
                 cmd.ExecuteNonQuery();
-                Ado.CloseSqlConnection(); // On ferme la connexion avec la bdd
+                Ado.CloseSqlConnection();
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
-                Console.WriteLine(ex.Message);
+                Ado.CloseSqlConnection();
+                throw;
             }
         }
+
         public static void DeleteAgence(Agence agence)
         {
             try
             {
                 SqlCommand cmd = new SqlCommand();
-                cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
-                Ado.StatusSqlConnection();
-                cmd.CommandText = "DELETE FROM Agences WHERE Ville = @Ville AND UO = @UO";
-                cmd.Parameters.AddWithValue("@Ville", agence.getVille());
-                cmd.Parameters.AddWithValue("@UO", agence.getUO());
+                cmd.Connection = Ado.OpenSqlConnection();
+                // Maintenant que l'Id existe sur l'objet Agence, on peut supprimer proprement par l'Id !
+                cmd.CommandText = "DELETE FROM Agences WHERE Id = @Id";
+                cmd.Parameters.AddWithValue("@Id", agence.Id);
                 cmd.ExecuteNonQuery();
-                Ado.CloseSqlConnection(); // On ferme la connexion avec la bdd
+                Ado.CloseSqlConnection();
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
-                Console.WriteLine(ex.Message);
+                Ado.CloseSqlConnection();
+                throw;
             }
         }
     }

@@ -9,6 +9,7 @@ namespace LocaSIO
         public MainWindow()
         {
             InitializeComponent();
+            RefreshAgences_Click(this, new RoutedEventArgs());
             RefreshAll();
         }
 
@@ -19,15 +20,28 @@ namespace LocaSIO
             RefreshArticles_Click(this, new RoutedEventArgs());
         }
 
-        private void RefreshAgences_Click(object sender, RoutedEventArgs e) => Execute(() => AgencesGrid.ItemsSource = AdoAgence.GetAgences(), "Agences chargées.");
+        private void RefreshAgences_Click(object sender, RoutedEventArgs e) {
+            try
+        {
+            AgencesGrid.ItemsSource = AdoAgence.GetAgences();
+        }
+            catch(Exception ex)
+        {
+            SetStatus($"Erreur : {ex.GetBaseException().Message}");
+        }
+        }
+
         private void RefreshClients_Click(object sender, RoutedEventArgs e) => Execute(() => ClientsGrid.ItemsSource = AdoClient.GetClients(), "Clients chargés.");
         private void RefreshArticles_Click(object sender, RoutedEventArgs e) => Execute(() => ArticlesGrid.ItemsSource = AdoArticle.GetArticles(), "Articles chargés.");
 
-        private void CreateAgence_Click(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(AgenceVilleTextBox.Text)) { SetStatus("La ville est obligatoire."); return; }
-            Execute(() => { AdoAgence.AddAgence(new Agence(AgenceVilleTextBox.Text.Trim(), 0, "")); RefreshAgences_Click(sender, e); AgenceVilleTextBox.Clear(); }, "Agence créée.");
-        }
+       private void CreateAgence_Click(object sender, RoutedEventArgs e)
+{
+    string ville = AgenceVilleTextBox.Text;
+    Agence agence = new Agence(ville, ""); // L'Id n'est plus passé ici
+    AdoAgence.AddAgence(agence);
+    RefreshAgences_Click(sender, e);
+    AgenceVilleTextBox.Clear();
+}
 
         private void DeleteAgence_Click(object sender, RoutedEventArgs e)
         {
@@ -39,7 +53,7 @@ namespace LocaSIO
         {
             if (string.IsNullOrWhiteSpace(ClientNomTextBox.Text) || string.IsNullOrWhiteSpace(ClientPrenomTextBox.Text) || string.IsNullOrWhiteSpace(ClientEmailTextBox.Text) || string.IsNullOrWhiteSpace(ClientTelephoneTextBox.Text)) { SetStatus("Tous les champs client sont obligatoires."); return; }
             if (!int.TryParse(ClientTelephoneTextBox.Text, out var telephone)) { SetStatus("Le numéro de téléphone est invalide."); return; }
-            Execute(() => { AdoClient.AddClient(new Client(ClientNomTextBox.Text.Trim(), ClientPrenomTextBox.Text.Trim(), ClientEmailTextBox.Text.Trim(), telephone)); RefreshClients_Click(sender, e); ClientNomTextBox.Clear(); ClientPrenomTextBox.Clear(); ClientEmailTextBox.Clear(); ClientTelephoneTextBox.Clear(); }, "Client créé.");
+            Execute(() => { AdoClient.AddClient(new Client(ClientNomTextBox.Text.Trim(), ClientPrenomTextBox.Text.Trim(), ClientEmailTextBox.Text.Trim(), ClientTelephoneTextBox.Text.Trim())); RefreshClients_Click(sender, e); ClientNomTextBox.Clear(); ClientPrenomTextBox.Clear(); ClientEmailTextBox.Clear(); ClientTelephoneTextBox.Clear(); }, "Client créé.");
         }
 
         private void DeleteClient_Click(object sender, RoutedEventArgs e)
@@ -63,7 +77,7 @@ namespace LocaSIO
         private void Execute(Action action, string successMessage)
         {
             try { action(); SetStatus(successMessage); }
-            catch (Exception exception) { SetStatus($"Erreur : {exception.Message}"); }
+            catch (Exception exception) { SetStatus($"Erreur : {exception.GetBaseException().Message}"); }
         }
 
         private void SetStatus(string message) => StatusTextBlock.Text = message;
