@@ -12,7 +12,7 @@
         
         <TextBlock Text="Interface de test des fonctionnalités LocaSIO" FontSize="22" FontWeight="Bold" Margin="0,0,0,14" />
         
-        <TabControl Grid.Row="1">
+        <TabControl x:Name="MainTabControl" Grid.Row="1">
             <TabItem Header="Agences">
                 <Grid Margin="10">
                     <Grid.RowDefinitions>
@@ -62,7 +62,14 @@
                             <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="*" />
                             <DataGridTextColumn Header="Prénom" Binding="{Binding Prenom}" Width="*" />
                             <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="*" />
-                            <DataGridTextColumn Header="Téléphone" Binding="{Binding Telephone}" Width="*" />
+                        <DataGridTextColumn Header="Téléphone" Binding="{Binding Telephone}" Width="*" />
+                        <DataGridTemplateColumn Header="Contrat" Width="100">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="Contrat" Tag="{Binding Id}" Click="OpenClientContrat_Click" Padding="8,3" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
@@ -97,6 +104,40 @@
                             <DataGridCheckBoxColumn Header="Disponible" Binding="{Binding Disponible}" Width="100" />
                             <DataGridTextColumn Header="Caution" Binding="{Binding Caution}" Width="100" />
                             <DataGridTextColumn Header="Agence" Binding="{Binding Agence}" Width="80" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Contrats">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <WrapPanel Margin="0,0,0,10">
+                        <TextBlock Text="Client" VerticalAlignment="Center" Margin="0,0,5,0" />
+                        <TextBlock x:Name="ContratClientContextTextBlock" Text="Aucun client sélectionné" VerticalAlignment="Center" Margin="0,0,12,0" />
+                        <TextBlock Text="Début" VerticalAlignment="Center" Margin="0,0,5,0" />
+                        <DatePicker x:Name="ContratDateDebutPicker" Width="130" Margin="0,0,10,0" />
+                        <TextBlock Text="Fin" VerticalAlignment="Center" Margin="0,0,5,0" />
+                        <DatePicker x:Name="ContratDateFinPicker" Width="130" Margin="0,0,10,0" />
+                        <TextBlock Text="Statut" VerticalAlignment="Center" Margin="0,0,5,0" />
+                        <TextBox x:Name="ContratStatutTextBox" Width="120" Margin="0,0,10,0" />
+                        <TextBlock Text="Nom distinctif" VerticalAlignment="Center" Margin="0,0,5,0" />
+                        <TextBox x:Name="ContratDistinguishedNameTextBox" Width="180" Margin="0,0,10,0" />
+                        <Button Content="Créer" Click="CreateContrat_Click" Padding="14,5" Margin="0,0,8,0" />
+                        <Button Content="Supprimer la sélection" Click="DeleteContrat_Click" Padding="14,5" Margin="0,0,8,0" />
+                        <Button Content="Actualiser" Click="RefreshContrats_Click" Padding="14,5" />
+                    </WrapPanel>
+
+                    <DataGrid x:Name="ContratsGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" TextElement.Foreground="Black">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Début" Binding="{Binding DateDebut}" Width="*" />
+                            <DataGridTextColumn Header="Fin" Binding="{Binding DateFin}" Width="*" />
+                            <DataGridTextColumn Header="Statut" Binding="{Binding Statut}" Width="*" />
+                            <DataGridTextColumn Header="Nom distinctif" Binding="{Binding DistinguishedName}" Width="*" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>

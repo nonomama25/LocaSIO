@@ -6,6 +6,8 @@ namespace LocaSIO
 {
     public partial class MainWindow : Window
     {
+        private int? selectedContratClientId;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -13,11 +15,26 @@ namespace LocaSIO
             RefreshAll();
         }
 
+        private void OpenClientContrat_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not FrameworkElement { DataContext: Client client })
+            {
+                SetStatus("Impossible de récupérer le client sélectionné.");
+                return;
+            }
+
+            selectedContratClientId = client.Id;
+            ContratClientContextTextBlock.Text = $"{client.Id} - {client.Nom} {client.Prenom}";
+            MainTabControl.SelectedIndex = 3;
+            RefreshContrats_Click(sender, e);
+        }
+
         private void RefreshAll()
         {
             RefreshAgences_Click(this, new RoutedEventArgs());
             RefreshClients_Click(this, new RoutedEventArgs());
             RefreshArticles_Click(this, new RoutedEventArgs());
+            RefreshContrats_Click(this, new RoutedEventArgs());
         }
 
         private void RefreshAgences_Click(object sender, RoutedEventArgs e) {
@@ -33,6 +50,7 @@ namespace LocaSIO
 
         private void RefreshClients_Click(object sender, RoutedEventArgs e) => Execute(() => ClientsGrid.ItemsSource = AdoClient.GetClients(), "Clients chargés.");
         private void RefreshArticles_Click(object sender, RoutedEventArgs e) => Execute(() => ArticlesGrid.ItemsSource = AdoArticle.GetArticles(), "Articles chargés.");
+        private void RefreshContrats_Click(object sender, RoutedEventArgs e) => Execute(() => ContratsGrid.ItemsSource = AdoContrat.GetContrats(), "Contrats chargés.");
 
        private void CreateAgence_Click(object sender, RoutedEventArgs e)
 {
@@ -70,8 +88,45 @@ namespace LocaSIO
 
         private void DeleteArticle_Click(object sender, RoutedEventArgs e)
         {
-            if (ArticlesGrid.SelectedItem is not Article article) { SetStatus("Sélectionnez un article à supprimer."); return; }
+            if (ArticlesGrid.SelectedItem is not Article article) { SetStatus("S?lectionnez un article ? supprimer."); return; }
             Execute(() => { AdoArticle.DeleteArticle(article); RefreshArticles_Click(sender, e); }, "Article supprimé.");
+        }
+
+        private void CreateContrat_Click(object sender, RoutedEventArgs e)
+        {
+            if (selectedContratClientId is not int clientId)
+            {
+                SetStatus("Ouvrez les contrats depuis un client pour associer le contrat.");
+                return;
+            }
+
+            if (ContratDateDebutPicker.SelectedDate is not DateTime dateDebut || ContratDateFinPicker.SelectedDate is not DateTime dateFin)
+            {
+                SetStatus("Sélectionnez les dates de début et de fin du contrat.");
+                return;
+            }
+
+            if (dateFin < dateDebut || string.IsNullOrWhiteSpace(ContratStatutTextBox.Text) || string.IsNullOrWhiteSpace(ContratDistinguishedNameTextBox.Text))
+            {
+                SetStatus("La date de fin doit être postérieure au début et les champs texte sont obligatoires.");
+                return;
+            }
+
+            Execute(() =>
+            {
+                AdoContrat.AddContrat(new Contrat(clientId, dateDebut, dateFin, ContratStatutTextBox.Text.Trim(), ContratDistinguishedNameTextBox.Text.Trim()));
+                RefreshContrats_Click(sender, e);
+                ContratDateDebutPicker.SelectedDate = null;
+                ContratDateFinPicker.SelectedDate = null;
+                ContratStatutTextBox.Clear();
+                ContratDistinguishedNameTextBox.Clear();
+            }, "Contrat créé.");
+        }
+
+        private void DeleteContrat_Click(object sender, RoutedEventArgs e)
+        {
+            if (ContratsGrid.SelectedItem is not Contrat contrat) { SetStatus("Sélectionnez un contrat à supprimer."); return; }
+            Execute(() => { AdoContrat.DeleteContrat(contrat); RefreshContrats_Click(sender, e); }, "Contrat supprimé.");
         }
 
         private void Execute(Action action, string successMessage)

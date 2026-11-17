@@ -8,7 +8,7 @@ namespace LocaSIO
 {
     internal class AdoContrat
     {
-        public static ObservableCollection<Contrat> GetContrats()
+        public static ObservableCollection<Contrat> GetContrats(int? clientId = null)
         {
             ObservableCollection<Contrat> contrats = new ObservableCollection<Contrat>();
             try
@@ -17,13 +17,18 @@ namespace LocaSIO
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
                 Ado.StatusSqlConnection();
-                cmd.CommandText = "SELECT * FROM Contrats"; // On recupere tt les contrats
+                cmd.CommandText = "SELECT ClientId, DateDebut, DateFin, Statut, DistinguishedName FROM Contrats";
+                if (clientId.HasValue)
+                {
+                    cmd.CommandText += " WHERE ClientId = @ClientId";
+                    cmd.Parameters.AddWithValue("@ClientId", clientId.Value);
+                }
                 reader = cmd.ExecuteReader();
                 while (reader.Read()) // Tant qu'il y a des contrats dans la bdd on les ajoute a la liste
                 {
                     Debug.WriteLine("Loading Contrat DDB");
-                    Debug.WriteLine(reader.GetString(1) + " " + reader.GetString(2));
-                    contrats.Add(new Contrat(reader.GetDateTime(1), reader.GetDateTime(2), reader.GetString(3), reader.GetString(4))); // On ajoute le contrat a la liste
+                    Debug.WriteLine(reader.GetString(3) + " " + reader.GetString(4));
+                    contrats.Add(new Contrat(reader.GetInt32(0), reader.GetDateTime(1), reader.GetDateTime(2), reader.GetString(3), reader.GetString(4)));
                 }
                 Ado.CloseSqlConnection();
             }// On ferme la connexion avec la bdd
@@ -43,7 +48,8 @@ namespace LocaSIO
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
                 Ado.StatusSqlConnection();
-                cmd.CommandText = "INSERT INTO Contrats (DateDebut, DateFin, Statut, DistinguishedName) VALUES (@DateDebut, @DateFin, @Statut, @DistinguishedName)";
+                cmd.CommandText = "INSERT INTO Contrats (ClientId, DateDebut, DateFin, Statut, DistinguishedName) VALUES (@ClientId, @DateDebut, @DateFin, @Statut, @DistinguishedName)";
+                cmd.Parameters.AddWithValue("@ClientId", contrat.ClientId);
                 cmd.Parameters.AddWithValue("@DateDebut", contrat.getDateDebut());
                 cmd.Parameters.AddWithValue("@DateFin", contrat.getDateFin());
                 cmd.Parameters.AddWithValue("@Statut", contrat.GetStatut());
@@ -65,7 +71,8 @@ namespace LocaSIO
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = Ado.OpenSqlConnection(); 
                 Ado.StatusSqlConnection();
-                cmd.CommandText = "UPDATE Contrats SET DateDebut = @DateDebut, DateFin = @DateFin, Statut = @Statut, DistinguishedName = @DistinguishedName WHERE DateDebut = @DateDebut AND DateFin = @DateFin AND Statut = @Statut AND DistinguishedName = @DistinguishedName";
+                cmd.CommandText = "UPDATE Contrats SET DateDebut = @DateDebut, DateFin = @DateFin, Statut = @Statut, DistinguishedName = @DistinguishedName WHERE ClientId = @ClientId AND DateDebut = @DateDebut AND DateFin = @DateFin AND Statut = @Statut AND DistinguishedName = @DistinguishedName";
+                cmd.Parameters.AddWithValue("@ClientId", contrat.ClientId);
                 cmd.Parameters.AddWithValue("@DateDebut", contrat.getDateDebut());
                 cmd.Parameters.AddWithValue("@DateFin", contrat.getDateFin());
                 cmd.Parameters.AddWithValue("@Statut", contrat.GetStatut());
@@ -87,7 +94,8 @@ namespace LocaSIO
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = Ado.OpenSqlConnection();
                 Ado.StatusSqlConnection();
-                cmd.CommandText = "DELETE FROM Contrats WHERE DateDebut = @DateDebut AND DateFin = @DateFin AND Statut = @Statut AND DistinguishedName = @DistinguishedName";
+                cmd.CommandText = "DELETE FROM Contrats WHERE ClientId = @ClientId AND DateDebut = @DateDebut AND DateFin = @DateFin AND Statut = @Statut AND DistinguishedName = @DistinguishedName";
+                cmd.Parameters.AddWithValue("@ClientId", contrat.ClientId);
                 cmd.Parameters.AddWithValue("@DateDebut", contrat.getDateDebut());
                 cmd.Parameters.AddWithValue("@DateFin", contrat.getDateFin());
                 cmd.Parameters.AddWithValue("@Statut", contrat.GetStatut());
@@ -95,9 +103,10 @@ namespace LocaSIO
                 cmd.ExecuteNonQuery();
                 Ado.CloseSqlConnection(); // On ferme la connexion avec la bdd
             }
-            catch (SqlException ex)
+            catch (SqlException)
             {
-                Console.WriteLine(ex.Message);
+                Ado.CloseSqlConnection();
+                throw;
             }
         }
     }

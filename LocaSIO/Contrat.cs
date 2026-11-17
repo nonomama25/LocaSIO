@@ -4,6 +4,7 @@ namespace LocaSIO
 {
     internal class Contrat
     {
+        public int ClientId { get; }
         private DateTime _dateDebut;
         private DateTime _dateFin;
 
@@ -11,11 +12,13 @@ namespace LocaSIO
         private string _distinguishedName;
 
         public Contrat(
+            int clientId,
             DateTime dateDebut,
             DateTime dateFin,
             string statut,
             string distinguishedName)
         {
+            ClientId = clientId;
             _dateDebut = dateDebut;
             _dateFin = dateFin;
             _statut = statut;
@@ -27,6 +30,8 @@ namespace LocaSIO
             return _dateDebut;
         }
 
+        public DateTime DateDebut => _dateDebut;
+
         public void setDateDebut(DateTime dateDebut)
         {
             _dateDebut = dateDebut;
@@ -36,6 +41,8 @@ namespace LocaSIO
         {
             return _dateFin;
         }
+
+        public DateTime DateFin => _dateFin;
 
         public void setDateFin(DateTime dateFin)
         {
@@ -47,9 +54,13 @@ namespace LocaSIO
             return _statut;
         }
 
+        public string Statut => _statut;
+
         public string GetDistinguishedName()
         {
             return _distinguishedName;
         }
+
+        public string DistinguishedName => _distinguishedName;
     }
 }

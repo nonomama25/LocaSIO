@@ -23,7 +23,7 @@ namespace LocaSIO
                 while (reader.Read()) // Tant qu'il y a des clients dans la bdd on les ajoute a la liste
                 {
                     Debug.WriteLine("Loading Client DDB");
-                    var client = new Client(reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4));
+                    var client = new Client(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3), reader.GetString(4));
                     AllClient.Add(client);
                 }
                 Ado.CloseSqlConnection();
