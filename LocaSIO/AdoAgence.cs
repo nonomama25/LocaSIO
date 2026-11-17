@@ -17,7 +17,7 @@ namespace LocaSIO
             {
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = Ado.OpenSqlConnection();
-                cmd.CommandText = "SELECT Id, Ville, UO FROM Agences";
+                cmd.CommandText = "SELECT * FROM Agences";
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())

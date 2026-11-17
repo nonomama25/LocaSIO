@@ -18,7 +18,7 @@ namespace LocaSIO
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
                 Ado.StatusSqlConnection();
-                cmd.CommandText = "SELECT Id, Nom, Prenom, Email, NumeroTel FROM Clients";
+                cmd.CommandText = "SELECT * FROM Clients";
                 reader = cmd.ExecuteReader();
                 while (reader.Read()) // Tant qu'il y a des clients dans la bdd on les ajoute a la liste
                 {

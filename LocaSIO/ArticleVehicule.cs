@@ -13,8 +13,8 @@ namespace LocaSIO
         private int _nbKilometre;
         private string _typeCarburant;
 
-        public ArticleVehicule(string immatriculation, string typeVehicule, int nbKilometre, string typeCarburant, string libelle, int tarifJournalier, bool disponible, int caution, int agenceId)
-            : base(libelle, tarifJournalier, disponible, caution, agenceId)
+        public ArticleVehicule(string immatriculation, string typeVehicule, int nbKilometre, string typeCarburant, string libelle, int tarifJournalier, int caution, int agenceId, string type)
+            : base(libelle, tarifJournalier, caution, agenceId, type)
         {
             this._immatriculation = immatriculation;
             this._typeVehicule = typeVehicule;

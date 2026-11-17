@@ -19,8 +19,8 @@ namespace LocaSIO
 
         private int _nbPiece;
 
-        public ArticleSport(string typeMateriel, int niveau, string saison, string libelle, int tarifJournalier, bool disponible, int caution, int agenceId)
-            : base(libelle, tarifJournalier, disponible, caution, agenceId)
+        public ArticleSport(string typeMateriel, int niveau, string saison, string libelle, int tarifJournalier, int caution, int agenceId, string type)
+            : base(libelle, tarifJournalier, caution, agenceId, type)
         {
             this._typeMateriel = typeMateriel;
             this._niveau = niveau;

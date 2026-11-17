@@ -39,13 +39,15 @@ namespace LocaSIO
 
         private void RefreshAgences_Click(object sender, RoutedEventArgs e) {
             try
-        {
-            AgencesGrid.ItemsSource = AdoAgence.GetAgences();
-        }
-            catch(Exception ex)
-        {
-            SetStatus($"Erreur : {ex.GetBaseException().Message}");
-        }
+            {
+                var agences = AdoAgence.GetAgences();
+                AgencesGrid.ItemsSource = agences;
+                ArticleAgenceComboBox.ItemsSource = agences;
+            }
+            catch (Exception ex)
+            {
+                SetStatus($"Erreur : {ex.GetBaseException().Message}");
+            }
         }
 
         private void RefreshClients_Click(object sender, RoutedEventArgs e) => Execute(() => ClientsGrid.ItemsSource = AdoClient.GetClients(), "Clients chargés.");
@@ -82,8 +84,8 @@ namespace LocaSIO
 
         private void CreateArticle_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(ArticleLibelleTextBox.Text) || !int.TryParse(ArticleTarifTextBox.Text, out var tarif) || !int.TryParse(ArticleCautionTextBox.Text, out var caution) || !int.TryParse(ArticleAgenceComboBox.Text, out var agenceId)) { SetStatus("Saisissez un libellé et des nombres valides pour le tarif, la caution et l’agence."); return; }
-            Execute(() => { AdoArticle.AddArticle(new Article(ArticleLibelleTextBox.Text.Trim(), tarif, ArticleDisponibleCheckBox.IsChecked == true, caution, agenceId)); RefreshArticles_Click(sender, e); ArticleLibelleTextBox.Clear(); ArticleTarifTextBox.Clear(); ArticleCautionTextBox.Clear();}, "Article créé.");
+            if (string.IsNullOrWhiteSpace(ArticleLibelleTextBox.Text) || !int.TryParse(ArticleTarifTextBox.Text, out var tarif) || !int.TryParse(ArticleCautionTextBox.Text, out var caution) || ArticleAgenceComboBox.SelectedValue is not int agenceId) { SetStatus("Saisissez un libellé, des nombres valides pour le tarif et la caution, et sélectionnez une agence."); return; }
+            Execute(() => { AdoArticle.AddArticle(new Article(ArticleLibelleTextBox.Text.Trim(), tarif, caution, agenceId); RefreshArticles_Click(sender, e); ArticleLibelleTextBox.Clear(); ArticleTarifTextBox.Clear(); ArticleCautionTextBox.Clear();}, "Article créé.");
         }
 
         private void DeleteArticle_Click(object sender, RoutedEventArgs e)

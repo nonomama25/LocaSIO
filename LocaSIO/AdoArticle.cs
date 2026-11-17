@@ -21,12 +21,12 @@ namespace LocaSIO
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
                 Ado.StatusSqlConnection();
-                cmd.CommandText = "SELECT Id, Libelle, TarifJournalier, Disponible, Caution, AgenceID FROM Article";
+                cmd.CommandText = "SELECT * FROM ArticlesLocations";
                 reader = cmd.ExecuteReader();
                 while (reader.Read()) // Tant qu'il y a des articles dans la bdd on les ajoute a la liste
                 {
                     Debug.WriteLine("Loading Article DDB");
-                    var article = new Article(reader.GetString(1), reader.GetInt32(2), reader.GetBoolean(3), reader.GetInt32(4), reader.GetInt32(5));
+                    var article = new Article(reader.GetString(1), reader.GetInt32(2), reader.GetInt32(3), reader.GetInt32(4), reader.GetString(5));
                     articles.Add(article);
                 }
                 Ado.CloseSqlConnection();
@@ -45,12 +45,12 @@ namespace LocaSIO
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = Ado.OpenSqlConnection();
                 Ado.StatusSqlConnection();
-                cmd.CommandText = "INSERT INTO Article (Libelle, TarifJournalier, Disponible, Caution, AgenceID) VALUES (@Libelle, @TarifJournalier, @Disponible, @Caution, @AgenceID)";
+                cmd.CommandText = "INSERT INTO ArticlesLocations (Libelle, TarifJournalier, Caution, AgenceID, Type) VALUES (@Libelle, @TarifJournalier, @Caution, @AgenceID, @Type)";
                 cmd.Parameters.AddWithValue("@Libelle", article.getLibelle());
                 cmd.Parameters.AddWithValue("@TarifJournalier", article.getTarifJournalier());
-                cmd.Parameters.AddWithValue("@Disponible", article.getDisponible());
                 cmd.Parameters.AddWithValue("@Caution", article.getCaution());
                 cmd.Parameters.AddWithValue("@AgenceID", article.getAgenceID());
+                cmd.Parameters.AddWithValue("@Type", article.GetType());
                 cmd.ExecuteNonQuery();
                 Ado.CloseSqlConnection();
             }
@@ -68,7 +68,7 @@ namespace LocaSIO
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = Ado.OpenSqlConnection();
                 Ado.StatusSqlConnection();
-                cmd.CommandText = "DELETE FROM Article WHERE Id = @Id";
+                cmd.CommandText = "DELETE FROM ArticlesLocations WHERE Id = @Id";
                 cmd.ExecuteNonQuery();
                 Ado.CloseSqlConnection();
             }
@@ -86,12 +86,12 @@ namespace LocaSIO
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = Ado.OpenSqlConnection();
                 Ado.StatusSqlConnection();
-                cmd.CommandText = "UPDATE Article SET Libelle = @Libelle, TarifJournalier = @TarifJournalier, Disponible = @Disponible, Caution = @Caution, AgenceID = @AgenceID WHERE Id = @Id";
+                cmd.CommandText = "UPDATE ArticlesLocation SET Libelle = @Libelle, TarifJournalier = @TarifJournalier, Caution = @Caution, AgenceID = @AgenceID Type = @Type WHERE Id = @Id";
                 cmd.Parameters.AddWithValue("@Libelle", article.getLibelle());
                 cmd.Parameters.AddWithValue("@TarifJournalier", article.getTarifJournalier());
-                cmd.Parameters.AddWithValue("@Disponible", article.getDisponible());
                 cmd.Parameters.AddWithValue("@Caution", article.getCaution());
                 cmd.Parameters.AddWithValue("@AgenceID", article.getAgenceID());
+                cmd.Parameters.AddWithValue("@Type", article.GetType());
                 cmd.ExecuteNonQuery();
                 Ado.CloseSqlConnection();
             }

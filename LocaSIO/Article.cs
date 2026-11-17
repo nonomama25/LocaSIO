@@ -1,23 +1,32 @@
 ﻿using System;
+using System.Web;
 namespace LocaSIO
 {
 	public class Article
 	{
 		private string _libelle;
 		private int _tarifJournalier;
-		private bool _disponible;
 		private int _caution;
 		private int _agenceId;
+		private string _type;
 
-		public Article(string libelle, int tarifJournalier, bool disponible, int caution, int agenceId)
+		public Article(string libelle, int tarifJournalier, int caution, int agenceId, string type)
 		{
 			_libelle = libelle;
 			_tarifJournalier = tarifJournalier;
-			_disponible = disponible;
 			_caution = caution;
 			_agenceId = agenceId;
+			_type = type;
 		}
 
+		public string getType()
+		{
+			return _type;
+		}
+		public void setType(string type)
+		{
+			_type = type;
+		}
         public string getLibelle()
 		{
 			return _libelle;
@@ -36,16 +45,6 @@ namespace LocaSIO
 		public void setTarifJournalier(int tarifJournalier)
 		{
 			_tarifJournalier = tarifJournalier;
-		}
-
-		public bool getDisponible()
-		{
-			return _disponible;
-		}
-
-		public void setDisponible(bool disponible)
-		{
-			_disponible = disponible;
 		}
 
 		public int getCaution()

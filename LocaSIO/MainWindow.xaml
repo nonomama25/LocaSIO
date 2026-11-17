@@ -90,8 +90,9 @@
                         <TextBlock Text="Caution" VerticalAlignment="Center" Margin="0,0,5,0" />
                         <TextBox x:Name="ArticleCautionTextBox" Width="80" Margin="0,0,10,0" />
                         <TextBlock Text="Agence" VerticalAlignment="Center" Margin="0,0,5,0" />
-                        <ComboBox x:Name="ArticleAgenceComboBox" Width="70" Margin="0,0,10,0" />
-                        <CheckBox x:Name="ArticleDisponibleCheckBox" Content="Disponible" IsChecked="True" VerticalAlignment="Center" Margin="0,0,10,0" />
+                        <ComboBox x:Name="ArticleAgenceComboBox" Width="80" Margin="0,0,10,0" DisplayMemberPath="Ville" SelectedValuePath="Id" />
+                        <TextBlock Text="Type " VerticalAlignment="Center" Margin="0,0,5,0" />
+                        <ComboBox x:Name="ArticleTypeComboBox" Width="80" Margin="0,0,10,0"/>
                         <Button Content="Créer" Click="CreateArticle_Click" Padding="14,5" Margin="0,0,8,0" />
                         <Button Content="Supprimer la sélection" Click="DeleteArticle_Click" Padding="14,5" Margin="0,0,8,0" />
                         <Button Content="Actualiser" Click="RefreshArticles_Click" Padding="14,5" />
@@ -101,8 +102,8 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Libellé" Binding="{Binding Libelle}" Width="*" />
                             <DataGridTextColumn Header="Tarif/jour" Binding="{Binding TarifJournalier}" Width="100" />
-                            <DataGridCheckBoxColumn Header="Disponible" Binding="{Binding Disponible}" Width="100" />
                             <DataGridTextColumn Header="Caution" Binding="{Binding Caution}" Width="100" />
+                            <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="100" />
                             <DataGridTextColumn Header="Agence" Binding="{Binding Agence}" Width="80" />
                         </DataGrid.Columns>
                     </DataGrid>
