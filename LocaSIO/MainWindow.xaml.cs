@@ -37,7 +37,7 @@ namespace LocaSIO
        private void CreateAgence_Click(object sender, RoutedEventArgs e)
 {
     string ville = AgenceVilleTextBox.Text;
-    Agence agence = new Agence(ville, ""); // L'Id n'est plus passé ici
+    Agence agence = new Agence(ville, "");
     AdoAgence.AddAgence(agence);
     RefreshAgences_Click(sender, e);
     AgenceVilleTextBox.Clear();
@@ -64,8 +64,8 @@ namespace LocaSIO
 
         private void CreateArticle_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(ArticleLibelleTextBox.Text) || !int.TryParse(ArticleTarifTextBox.Text, out var tarif) || !int.TryParse(ArticleCautionTextBox.Text, out var caution) || !int.TryParse(ArticleAgenceIdTextBox.Text, out var agenceId)) { SetStatus("Saisissez un libellé et des nombres valides pour le tarif, la caution et l’agence."); return; }
-            Execute(() => { AdoArticle.AddArticle(new Article(ArticleLibelleTextBox.Text.Trim(), tarif, ArticleDisponibleCheckBox.IsChecked == true, caution, agenceId)); RefreshArticles_Click(sender, e); ArticleLibelleTextBox.Clear(); ArticleTarifTextBox.Clear(); ArticleCautionTextBox.Clear(); ArticleAgenceIdTextBox.Clear(); }, "Article créé.");
+            if (string.IsNullOrWhiteSpace(ArticleLibelleTextBox.Text) || !int.TryParse(ArticleTarifTextBox.Text, out var tarif) || !int.TryParse(ArticleCautionTextBox.Text, out var caution) || !int.TryParse(ArticleAgenceComboBox.Text, out var agenceId)) { SetStatus("Saisissez un libellé et des nombres valides pour le tarif, la caution et l’agence."); return; }
+            Execute(() => { AdoArticle.AddArticle(new Article(ArticleLibelleTextBox.Text.Trim(), tarif, ArticleDisponibleCheckBox.IsChecked == true, caution, agenceId)); RefreshArticles_Click(sender, e); ArticleLibelleTextBox.Clear(); ArticleTarifTextBox.Clear(); ArticleCautionTextBox.Clear();}, "Article créé.");
         }
 
         private void DeleteArticle_Click(object sender, RoutedEventArgs e)

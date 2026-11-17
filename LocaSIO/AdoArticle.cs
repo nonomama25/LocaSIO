@@ -69,7 +69,6 @@ namespace LocaSIO
                 cmd.Connection = Ado.OpenSqlConnection();
                 Ado.StatusSqlConnection();
                 cmd.CommandText = "DELETE FROM Article WHERE Id = @Id";
-                cmd.Parameters.AddWithValue("@Id", article.getID());
                 cmd.ExecuteNonQuery();
                 Ado.CloseSqlConnection();
             }
@@ -93,7 +92,6 @@ namespace LocaSIO
                 cmd.Parameters.AddWithValue("@Disponible", article.getDisponible());
                 cmd.Parameters.AddWithValue("@Caution", article.getCaution());
                 cmd.Parameters.AddWithValue("@AgenceID", article.getAgenceID());
-                cmd.Parameters.AddWithValue("@Id", article.getID());
                 cmd.ExecuteNonQuery();
                 Ado.CloseSqlConnection();
             }

@@ -30,7 +30,6 @@
                     
                     <DataGrid x:Name="AgencesGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" TextElement.Foreground="Black">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="100" />
                             <DataGridTextColumn Header="Ville" Binding="{Binding Ville}" Width="*" />
                         </DataGrid.Columns>
                     </DataGrid>
@@ -60,7 +59,6 @@
                     
                     <DataGrid x:Name="ClientsGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" TextElement.Foreground="Black">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="60" />
                             <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="*" />
                             <DataGridTextColumn Header="Prénom" Binding="{Binding Prenom}" Width="*" />
                             <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="*" />
@@ -84,8 +82,8 @@
                         <TextBox x:Name="ArticleTarifTextBox" Width="80" Margin="0,0,10,0" />
                         <TextBlock Text="Caution" VerticalAlignment="Center" Margin="0,0,5,0" />
                         <TextBox x:Name="ArticleCautionTextBox" Width="80" Margin="0,0,10,0" />
-                        <TextBlock Text="Id agence" VerticalAlignment="Center" Margin="0,0,5,0" />
-                        <TextBox x:Name="ArticleAgenceIdTextBox" Width="70" Margin="0,0,10,0" />
+                        <TextBlock Text="Agence" VerticalAlignment="Center" Margin="0,0,5,0" />
+                        <ComboBox x:Name="ArticleAgenceComboBox" Width="70" Margin="0,0,10,0" />
                         <CheckBox x:Name="ArticleDisponibleCheckBox" Content="Disponible" IsChecked="True" VerticalAlignment="Center" Margin="0,0,10,0" />
                         <Button Content="Créer" Click="CreateArticle_Click" Padding="14,5" Margin="0,0,8,0" />
                         <Button Content="Supprimer la sélection" Click="DeleteArticle_Click" Padding="14,5" Margin="0,0,8,0" />
@@ -94,12 +92,11 @@
                     
                     <DataGrid x:Name="ArticlesGrid" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" TextElement.Foreground="Black">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="60" />
                             <DataGridTextColumn Header="Libellé" Binding="{Binding Libelle}" Width="*" />
                             <DataGridTextColumn Header="Tarif/jour" Binding="{Binding TarifJournalier}" Width="100" />
                             <DataGridCheckBoxColumn Header="Disponible" Binding="{Binding Disponible}" Width="100" />
                             <DataGridTextColumn Header="Caution" Binding="{Binding Caution}" Width="100" />
-                            <DataGridTextColumn Header="Agence" Binding="{Binding AgenceId}" Width="80" />
+                            <DataGridTextColumn Header="Agence" Binding="{Binding Agence}" Width="80" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
