@@ -74,9 +74,9 @@ namespace LocaSIO
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
                 Ado.StatusSqlConnection();
-                cmd.CommandText = "INSERT INTO Contrats (ClientId, ArticleId, DateDebut, DateFin, Statut, DistinguishedName) VALUES (@ClientId, @ArticleId, @DateDebut, @DateFin, @Statut, @DistinguishedName)";
+                cmd.CommandText = "INSERT INTO Contrats (ClientId, ArticleLocationId, DateDebut, DateFin, Statut, DistinguishedName) VALUES (@ClientId, @ArticleLocationId, @DateDebut, @DateFin, @Statut, @DistinguishedName)";
                 cmd.Parameters.AddWithValue("@ClientId", contrat.ClientId);
-                cmd.Parameters.AddWithValue("@ArticleId", articleId);
+                cmd.Parameters.AddWithValue("@ArticleLocationId", articleId);
                 cmd.Parameters.AddWithValue("@DateDebut", contrat.getDateDebut());
                 cmd.Parameters.AddWithValue("@DateFin", contrat.getDateFin());
                 cmd.Parameters.AddWithValue("@Statut", contrat.GetStatut());

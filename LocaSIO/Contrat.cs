@@ -8,6 +8,8 @@ namespace LocaSIO
         private DateTime _dateDebut;
         private DateTime _dateFin;
 
+        private int ArticleId { get; set; }
+
         private string _statut;
         private string _distinguishedName;
 
