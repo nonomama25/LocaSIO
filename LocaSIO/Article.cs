@@ -19,6 +19,12 @@ namespace LocaSIO
 			_type = type;
 		}
 
+		public string Type
+		{
+			get => _type;
+			set => _type = value;
+		}
+
 		public string getType()
 		{
 			return _type;

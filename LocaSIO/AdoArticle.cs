@@ -50,7 +50,7 @@ namespace LocaSIO
                 cmd.Parameters.AddWithValue("@TarifJournalier", article.getTarifJournalier());
                 cmd.Parameters.AddWithValue("@Caution", article.getCaution());
                 cmd.Parameters.AddWithValue("@AgenceID", article.getAgenceID());
-                cmd.Parameters.AddWithValue("@Type", article.GetType());
+                cmd.Parameters.AddWithValue("@Type", article.getType());
                 cmd.ExecuteNonQuery();
                 Ado.CloseSqlConnection();
             }
@@ -91,7 +91,7 @@ namespace LocaSIO
                 cmd.Parameters.AddWithValue("@TarifJournalier", article.getTarifJournalier());
                 cmd.Parameters.AddWithValue("@Caution", article.getCaution());
                 cmd.Parameters.AddWithValue("@AgenceID", article.getAgenceID());
-                cmd.Parameters.AddWithValue("@Type", article.GetType());
+                cmd.Parameters.AddWithValue("@Type", article.getType());
                 cmd.ExecuteNonQuery();
                 Ado.CloseSqlConnection();
             }

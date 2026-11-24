@@ -11,6 +11,7 @@ namespace LocaSIO
         public MainWindow()
         {
             InitializeComponent();
+            ArticleTypeComboBox.ItemsSource = new[] { "Véhicule", "Sport", "Événement", "Chantier" };
             RefreshAgences_Click(this, new RoutedEventArgs());
             RefreshAll();
         }
@@ -84,8 +85,16 @@ namespace LocaSIO
 
         private void CreateArticle_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(ArticleLibelleTextBox.Text) || !int.TryParse(ArticleTarifTextBox.Text, out var tarif) || !int.TryParse(ArticleCautionTextBox.Text, out var caution) || ArticleAgenceComboBox.SelectedValue is not int agenceId) { SetStatus("Saisissez un libellé, des nombres valides pour le tarif et la caution, et sélectionnez une agence."); return; }
-            Execute(() => { AdoArticle.AddArticle(new Article(ArticleLibelleTextBox.Text.Trim(), tarif, caution, agenceId); RefreshArticles_Click(sender, e); ArticleLibelleTextBox.Clear(); ArticleTarifTextBox.Clear(); ArticleCautionTextBox.Clear();}, "Article créé.");
+            if (string.IsNullOrWhiteSpace(ArticleLibelleTextBox.Text)
+                || !int.TryParse(ArticleTarifTextBox.Text, out int tarif)
+                || !int.TryParse(ArticleCautionTextBox.Text, out int caution)
+                || ArticleAgenceComboBox.SelectedValue is not int agenceId
+                || ArticleTypeComboBox.SelectedItem is not string type)
+            {
+                SetStatus("Saisissez un libellé, des nombres valides pour le tarif et la caution, et sélectionnez une agence."); return; }
+            Execute(() =>
+            {
+                AdoArticle.AddArticle(new Article(ArticleLibelleTextBox.Text.Trim(), tarif, caution, agenceId, type)); RefreshArticles_Click(sender, e); ArticleLibelleTextBox.Clear(); ArticleTarifTextBox.Clear(); ArticleCautionTextBox.Clear();}, "Article créé.");
         }
 
         private void DeleteArticle_Click(object sender, RoutedEventArgs e)
