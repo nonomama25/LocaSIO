@@ -8,6 +8,32 @@ namespace LocaSIO
 {
     internal class AdoContrat
     {
+        public static ObservableCollection<KeyValuePair<int, string>> GetArticlesForSelection()
+        {
+            ObservableCollection<KeyValuePair<int, string>> articles = new ObservableCollection<KeyValuePair<int, string>>();
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = Ado.OpenSqlConnection();
+                Ado.StatusSqlConnection();
+                cmd.CommandText = "SELECT Id, Libelle FROM ArticlesLocations ORDER BY Libelle";
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        articles.Add(new KeyValuePair<int, string>(reader.GetInt32(0), reader.GetString(1)));
+                    }
+                }
+                Ado.CloseSqlConnection();
+            }
+            catch (SqlException)
+            {
+                Ado.CloseSqlConnection();
+                throw;
+            }
+            return articles;
+        }
+
         public static ObservableCollection<Contrat> GetContrats(int? clientId = null)
         {
             ObservableCollection<Contrat> contrats = new ObservableCollection<Contrat>();
@@ -41,15 +67,16 @@ namespace LocaSIO
             return contrats; // On retourne la liste de contrats
         }
 
-        public static void AddContrat(Contrat contrat)
+        public static void AddContrat(Contrat contrat, int articleId)
         {
             try
             {
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = Ado.OpenSqlConnection(); // On ouvre la connexion avec la bdd
                 Ado.StatusSqlConnection();
-                cmd.CommandText = "INSERT INTO Contrats (ClientId, DateDebut, DateFin, Statut, DistinguishedName) VALUES (@ClientId, @DateDebut, @DateFin, @Statut, @DistinguishedName)";
+                cmd.CommandText = "INSERT INTO Contrats (ClientId, ArticleId, DateDebut, DateFin, Statut, DistinguishedName) VALUES (@ClientId, @ArticleId, @DateDebut, @DateFin, @Statut, @DistinguishedName)";
                 cmd.Parameters.AddWithValue("@ClientId", contrat.ClientId);
+                cmd.Parameters.AddWithValue("@ArticleId", articleId);
                 cmd.Parameters.AddWithValue("@DateDebut", contrat.getDateDebut());
                 cmd.Parameters.AddWithValue("@DateFin", contrat.getDateFin());
                 cmd.Parameters.AddWithValue("@Statut", contrat.GetStatut());

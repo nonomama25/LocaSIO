@@ -52,7 +52,11 @@ namespace LocaSIO
         }
 
         private void RefreshClients_Click(object sender, RoutedEventArgs e) => Execute(() => ClientsGrid.ItemsSource = AdoClient.GetClients(), "Clients chargés.");
-        private void RefreshArticles_Click(object sender, RoutedEventArgs e) => Execute(() => ArticlesGrid.ItemsSource = AdoArticle.GetArticles(), "Articles chargés.");
+        private void RefreshArticles_Click(object sender, RoutedEventArgs e) => Execute(() =>
+        {
+            ArticlesGrid.ItemsSource = AdoArticle.GetArticles();
+            ContratArticleComboBox.ItemsSource = AdoContrat.GetArticlesForSelection();
+        }, "Articles chargés.");
         private void RefreshContrats_Click(object sender, RoutedEventArgs e) => Execute(() => ContratsGrid.ItemsSource = AdoContrat.GetContrats(), "Contrats chargés.");
 
        private void CreateAgence_Click(object sender, RoutedEventArgs e)
@@ -111,6 +115,12 @@ namespace LocaSIO
                 return;
             }
 
+            if (ContratArticleComboBox.SelectedValue is not int articleId)
+            {
+                SetStatus("Sélectionnez un article pour le contrat.");
+                return;
+            }
+
             if (ContratDateDebutPicker.SelectedDate is not DateTime dateDebut || ContratDateFinPicker.SelectedDate is not DateTime dateFin)
             {
                 SetStatus("Sélectionnez les dates de début et de fin du contrat.");
@@ -125,8 +135,9 @@ namespace LocaSIO
 
             Execute(() =>
             {
-                AdoContrat.AddContrat(new Contrat(clientId, dateDebut, dateFin, ContratStatutTextBox.Text.Trim(), ContratDistinguishedNameTextBox.Text.Trim()));
+                AdoContrat.AddContrat(new Contrat(clientId, dateDebut, dateFin, ContratStatutTextBox.Text.Trim(), ContratDistinguishedNameTextBox.Text.Trim()), articleId);
                 RefreshContrats_Click(sender, e);
+                ContratArticleComboBox.SelectedItem = null;
                 ContratDateDebutPicker.SelectedDate = null;
                 ContratDateFinPicker.SelectedDate = null;
                 ContratStatutTextBox.Clear();
